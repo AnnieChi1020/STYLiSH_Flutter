@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_stylish/components/product_card.dart';
-import 'package:flutter_stylish/components/product_columns.dart';
+import 'package:flutter_stylish/components/product_column_desktop.dart';
+import 'package:flutter_stylish/components/product_column_mobile.dart';
 
 void main() {
   runApp(const MyApp());
@@ -103,20 +104,20 @@ class _MyHomePageState extends State<MyHomePage> {
                     Expanded(
                         child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child:
-                          ProductColumns(items: items, category: categories[0]),
+                      child: ProductColumnDesktop(
+                          items: items, category: categories[0]),
                     )),
                     Expanded(
                         child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child:
-                          ProductColumns(items: items, category: categories[1]),
+                      child: ProductColumnDesktop(
+                          items: items, category: categories[1]),
                     )),
                     Expanded(
                         child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child:
-                          ProductColumns(items: items, category: categories[2]),
+                      child: ProductColumnDesktop(
+                          items: items, category: categories[2]),
                     )),
                   ],
                 );
@@ -125,33 +126,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: ListView(children: [
-                        Container(
-                          margin: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: Center(child: Text(categories[0])),
-                        ),
-                        for (var i = 0; i < items.length; i++)
-                          ProductCard(
-                            name: items[i].name,
-                            price: items[i].price,
-                          ),
-                        Container(
-                          margin: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: Center(child: Text(categories[1])),
-                        ),
-                        for (var i = 0; i < items.length; i++)
-                          ProductCard(
-                            name: items[i].name,
-                            price: items[i].price,
-                          ),
-                        Container(
-                          margin: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: Center(child: Text(categories[2])),
-                        ),
-                        for (var i = 0; i < items.length; i++)
-                          ProductCard(
-                            name: items[i].name,
-                            price: items[i].price,
-                          ),
+                        ProductColumnMobile(
+                            items: items, category: categories[0]),
+                        ProductColumnMobile(
+                            items: items, category: categories[1]),
+                        ProductColumnMobile(
+                            items: items, category: categories[2]),
                       ])),
                 );
               }
