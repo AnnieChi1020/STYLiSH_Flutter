@@ -17,7 +17,7 @@ class ProductColumnMobile extends StatefulWidget {
 }
 
 class _ProductColumnMobileState extends State<ProductColumnMobile> {
-  bool isShow = false;
+  bool isShow = true;
 
   @override
   Widget build(BuildContext context) {
