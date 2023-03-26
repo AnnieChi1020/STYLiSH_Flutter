@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_stylish/components/product_card.dart';
 import 'package:flutter_stylish/main.dart';
 
-class ProductColumns extends StatelessWidget {
-  const ProductColumns({
+class ProductColumnDesktop extends StatelessWidget {
+  const ProductColumnDesktop({
     super.key,
     required this.items,
     required this.category,
