@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_stylish/components/pages/detail_page.dart';
 import 'package:flutter_stylish/components/product_card.dart';
 import 'package:flutter_stylish/components/product_column_desktop.dart';
 import 'package:flutter_stylish/components/product_column_mobile.dart';
@@ -19,6 +20,9 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blueGrey,
       ),
       home: const MyHomePage(title: 'STYLiSH'),
+      routes: {
+        '/details': (context) => DetailPage(),
+      },
     );
   }
 }
