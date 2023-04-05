@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_stylish/components/pages/detail_page.dart';
-import 'package:flutter_stylish/components/product_card.dart';
-import 'package:flutter_stylish/components/product_column_desktop.dart';
-import 'package:flutter_stylish/components/product_column_mobile.dart';
+import 'package:flutter_stylish/pages/detail_page/detail_page.dart';
+import 'package:flutter_stylish/pages/main_page/product_column_desktop.dart';
 import 'package:flutter_stylish/components/responsive_widget.dart';
+import 'package:flutter_stylish/pages/main_page/product_column_mobile.dart';
 
 void main() {
   runApp(const MyApp());

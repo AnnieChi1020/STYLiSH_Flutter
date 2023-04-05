@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_stylish/components/pages/color_selector.dart';
-import 'package:flutter_stylish/components/pages/quantity_row.dart';
-import 'package:flutter_stylish/components/pages/right_detail.dart';
-import 'package:flutter_stylish/components/pages/size_selector.dart';
 import 'package:flutter_stylish/components/responsive_widget.dart';
+import 'package:flutter_stylish/pages/detail_page/right_detail.dart';
 
 class DetailPage extends StatelessWidget {
   @override

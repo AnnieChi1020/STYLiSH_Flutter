@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_stylish/components/pages/color_selector.dart';
-import 'package:flutter_stylish/components/pages/quantity_row.dart';
-import 'package:flutter_stylish/components/pages/size_selector.dart';
+import 'package:flutter_stylish/pages/detail_page/color_selector.dart';
+import 'package:flutter_stylish/pages/detail_page/quantity_row.dart';
+import 'package:flutter_stylish/pages/detail_page/size_selector.dart';
 import 'package:flutter_stylish/components/responsive_widget.dart';
 
 class RightDetail extends StatelessWidget {
