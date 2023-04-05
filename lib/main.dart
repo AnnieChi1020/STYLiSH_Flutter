@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_stylish/components/product_card.dart';
-import 'package:flutter_stylish/components/product_column_desktop.dart';
-import 'package:flutter_stylish/components/product_column_mobile.dart';
+import 'package:flutter_stylish/pages/detail_page/detail_page.dart';
+import 'package:flutter_stylish/pages/main_page/product_column_desktop.dart';
+import 'package:flutter_stylish/components/responsive_widget.dart';
+import 'package:flutter_stylish/pages/main_page/product_column_mobile.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,6 +20,9 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blueGrey,
       ),
       home: const MyHomePage(title: 'STYLiSH'),
+      routes: {
+        '/details': (context) => DetailPage(),
+      },
     );
   }
 }
@@ -92,51 +96,40 @@ class _MyHomePageState extends State<MyHomePage> {
                 )),
           ),
           Expanded(
-            child: LayoutBuilder(
-                builder: (BuildContext context, BoxConstraints constraints) {
-              final screenWidth = constraints.maxWidth;
-              final isDesktop = screenWidth > 600;
-
-              if (isDesktop) {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Expanded(
-                        child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: ProductColumnDesktop(
-                          items: items, category: categories[0]),
-                    )),
-                    Expanded(
-                        child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: ProductColumnDesktop(
-                          items: items, category: categories[1]),
-                    )),
-                    Expanded(
-                        child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: ProductColumnDesktop(
-                          items: items, category: categories[2]),
-                    )),
-                  ],
-                );
-              } else {
-                return Expanded(
-                  child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: ListView(children: [
-                        ProductColumnMobile(
-                            items: items, category: categories[0]),
-                        ProductColumnMobile(
-                            items: items, category: categories[1]),
-                        ProductColumnMobile(
-                            items: items, category: categories[2]),
-                      ])),
-                );
-              }
-            }),
-          ),
+              child: ResponsiveWidget(
+            largeScreenComponent: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Expanded(
+                    child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: ProductColumnDesktop(
+                      items: items, category: categories[0]),
+                )),
+                Expanded(
+                    child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: ProductColumnDesktop(
+                      items: items, category: categories[1]),
+                )),
+                Expanded(
+                    child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: ProductColumnDesktop(
+                      items: items, category: categories[2]),
+                )),
+              ],
+            ),
+            smallScreenComponent: Expanded(
+              child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: ListView(children: [
+                    ProductColumnMobile(items: items, category: categories[0]),
+                    ProductColumnMobile(items: items, category: categories[1]),
+                    ProductColumnMobile(items: items, category: categories[2]),
+                  ])),
+            ),
+          )),
         ],
       ),
     );

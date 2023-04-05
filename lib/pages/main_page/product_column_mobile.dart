@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_stylish/components/product_card.dart';
+import 'package:flutter_stylish/pages/main_page/product_card.dart';
 import 'package:flutter_stylish/main.dart';
 
 class ProductColumnMobile extends StatefulWidget {
