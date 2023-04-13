@@ -5,10 +5,12 @@ class ProductCard extends StatelessWidget {
     super.key,
     required this.name,
     required this.price,
+    required this.imageUrl,
   });
 
   final String name;
-  final String price;
+  final int price;
+  final String imageUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -34,10 +36,10 @@ class ProductCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
+                  width: 80.0,
                   height: double.infinity,
-                  child: Image.asset(
-                    'assets/images/image1.jpeg',
-                    width: 80.0,
+                  child: Image.network(
+                    imageUrl,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -49,7 +51,7 @@ class ProductCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(name),
-                        Text(price),
+                        Text(price.toString()),
                       ],
                     ),
                   ),
