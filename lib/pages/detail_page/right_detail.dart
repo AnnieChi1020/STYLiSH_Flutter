@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_stylish/pages/detail_page/color_selector.dart';
-import 'package:flutter_stylish/pages/detail_page/quantity_row.dart';
-import 'package:flutter_stylish/pages/detail_page/size_selector.dart';
-import 'package:flutter_stylish/components/responsive_widget.dart';
+import 'package:flutter_stylish/pages/detail_page/selector_panel.dart/main.dart';
 
 class RightDetail extends StatelessWidget {
+  final List<Map<String, String>> colors = [
+    {"code": "FFFFFF", "name": "白色"},
+    {"code": "DDFFBB", "name": "亮綠"},
+    {"code": "CCCCCC", "name": "淺灰"}
+  ];
+  final List<String> sizes = [
+    'S',
+    'M',
+    'L',
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -25,42 +33,15 @@ class RightDetail extends StatelessWidget {
         style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
         textAlign: TextAlign.left,
       ),
-      const SizedBox(height: 24.0),
-      const ColorSelector(),
       const SizedBox(height: 12.0),
-      const SizeSelector(),
-      const SizedBox(height: 12.0),
-      QuantityRow(),
-      const SizedBox(height: 20.0),
-      ResponsiveWidget(
-        smallScreenComponent: SizedBox(
-          width: double.infinity,
-          child: ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.black,
-              textStyle: const TextStyle(
-                fontSize: 16.0,
-                color: Colors.white,
-              ),
-            ),
-            child: const Text('請選擇尺寸'),
-          ),
-        ),
-        largeScreenComponent: SizedBox(
-          child: ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.black,
-              textStyle: const TextStyle(
-                fontSize: 16.0,
-                color: Colors.white,
-              ),
-            ),
-            child: const Text('請選擇尺寸'),
-          ),
-        ),
+      Divider(
+        color: Colors.grey.shade500,
+        height: 12,
+        thickness: 0.5,
+        indent: 0,
+        endIndent: 0,
       ),
+      SelectorPanel(colors: colors, sizes: sizes),
       const SizedBox(height: 20.0),
       const Text(
         '實品顏色一單品照為主',
