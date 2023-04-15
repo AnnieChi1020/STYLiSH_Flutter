@@ -1,20 +1,23 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_stylish/components/responsive_widget.dart';
+import 'package:flutter_stylish/models/product.dart';
+import 'package:flutter_stylish/pages/detail_page/main.dart';
+import 'package:go_router/go_router.dart';
 
 class ProductCard extends StatelessWidget {
   const ProductCard({
     super.key,
-    required this.name,
-    required this.price,
+    required this.product,
   });
 
-  final String name;
-  final String price;
+  final Product product;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, '/details');
+        GoRouter.of(context).go('/details/${product.id}');
       },
       child: Container(
           margin: const EdgeInsets.only(bottom: 16.0),
@@ -34,10 +37,15 @@ class ProductCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
+                  width: 80.0,
                   height: double.infinity,
-                  child: Image.asset(
-                    'assets/images/image1.jpeg',
-                    width: 80.0,
+                  child: CachedNetworkImage(
+                    imageUrl: product.mainImage,
+                    placeholder: (context, url) => const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -48,8 +56,8 @@ class ProductCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(name),
-                        Text(price),
+                        Text(product.title),
+                        Text('NT ${product.price}'),
                       ],
                     ),
                   ),

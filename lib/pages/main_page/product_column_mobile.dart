@@ -9,7 +9,7 @@ class ProductColumnMobile extends StatefulWidget {
     required this.category,
   }) : super(key: key);
 
-  final List<Product> items;
+  final List items;
   final String category;
 
   @override
@@ -38,10 +38,7 @@ class _ProductColumnMobileState extends State<ProductColumnMobile> {
         visible: isShow,
         child: Column(
           children: widget.items
-              .map((product) => ProductCard(
-                    name: product.name,
-                    price: product.price,
-                  ))
+              .map((product) => ProductCard(product: product))
               .toList(),
         ),
       )

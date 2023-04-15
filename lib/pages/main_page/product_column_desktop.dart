@@ -9,7 +9,7 @@ class ProductColumnDesktop extends StatelessWidget {
     required this.category,
   });
 
-  final List<Product> items;
+  final List items;
   final String category;
 
   @override
@@ -29,8 +29,7 @@ class ProductColumnDesktop extends StatelessWidget {
             key: centerKey,
             delegate: SliverChildBuilderDelegate(
               (BuildContext context, int index) {
-                return ProductCard(
-                    name: items[index].name, price: items[index].price);
+                return ProductCard(product: items[index]);
               },
               childCount: items.length,
             ),

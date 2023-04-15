@@ -1,8 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_stylish/pages/detail_page/detail_page.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_stylish/cubit/product_cubit.dart';
+import 'package:flutter_stylish/pages/detail_page/main.dart';
 import 'package:flutter_stylish/pages/main_page/product_column_desktop.dart';
 import 'package:flutter_stylish/components/responsive_widget.dart';
 import 'package:flutter_stylish/pages/main_page/product_column_mobile.dart';
+import 'package:flutter_stylish/services/product_service.dart';
+import 'package:go_router/go_router.dart';
+
+/// The route configuration.
+final GoRouter _router = GoRouter(
+  routes: <RouteBase>[
+    GoRoute(
+      path: '/',
+      builder: (BuildContext context, GoRouterState state) {
+        return const MyHomePage(
+          title: 'STYLiSH',
+        );
+      },
+      routes: <RouteBase>[
+        GoRoute(
+          path: 'details/:productId',
+          builder: (BuildContext context, GoRouterState state) {
+            return DetailPage(
+              productId: state.params['productId']!,
+            );
+          },
+        ),
+      ],
+    ),
+  ],
+);
 
 void main() {
   runApp(const MyApp());
@@ -14,16 +42,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'STYLiSH',
-      theme: ThemeData(
-        primarySwatch: Colors.blueGrey,
-      ),
-      home: const MyHomePage(title: 'STYLiSH'),
-      routes: {
-        '/details': (context) => DetailPage(),
-      },
-    );
+    return BlocProvider(
+        create: (context) =>
+            ProductCubit(productService: ProductService())..fetchProducts(),
+        child: MaterialApp.router(
+          title: 'STYLiSH',
+          theme: ThemeData(
+            primarySwatch: Colors.blueGrey,
+          ),
+          routerConfig: _router,
+        ));
   }
 }
 
@@ -44,13 +72,6 @@ class Product {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Product> items = [
-    Product(name: 'UNIQLO 特級輕羽絨', price: '100'),
-    Product(name: 'UNIQLO 特級輕羽絨', price: '100'),
-    Product(name: 'UNIQLO 特級輕羽絨', price: '100'),
-    Product(name: 'UNIQLO 特級輕羽絨', price: '100')
-  ];
-
   final List<String> categories = ['女裝', '男裝', '配件'];
 
   final List<String> bannerImages = [
@@ -60,6 +81,12 @@ class _MyHomePageState extends State<MyHomePage> {
     'assets/images/image1.jpeg',
     'assets/images/image1.jpeg'
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<ProductCubit>().fetchProducts();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,41 +122,62 @@ class _MyHomePageState extends State<MyHomePage> {
                   },
                 )),
           ),
-          Expanded(
-              child: ResponsiveWidget(
-            largeScreenComponent: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Expanded(
-                    child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: ProductColumnDesktop(
-                      items: items, category: categories[0]),
-                )),
-                Expanded(
-                    child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: ProductColumnDesktop(
-                      items: items, category: categories[1]),
-                )),
-                Expanded(
-                    child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: ProductColumnDesktop(
-                      items: items, category: categories[2]),
-                )),
-              ],
-            ),
-            smallScreenComponent: Expanded(
-              child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: ListView(children: [
-                    ProductColumnMobile(items: items, category: categories[0]),
-                    ProductColumnMobile(items: items, category: categories[1]),
-                    ProductColumnMobile(items: items, category: categories[2]),
-                  ])),
-            ),
-          )),
+          BlocBuilder<ProductCubit, ProductState>(builder: (context, state) {
+            if (state is ProductLoading) {
+              return const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 40.0),
+                  child: Center(
+                      child: SizedBox(child: CircularProgressIndicator())));
+            }
+            if (state is ProductLoaded) {
+              return Expanded(
+                  child: ResponsiveWidget(
+                largeScreenComponent: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Expanded(
+                        child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: ProductColumnDesktop(
+                          items: state.products['women'],
+                          category: categories[0]),
+                    )),
+                    Expanded(
+                        child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: ProductColumnDesktop(
+                          items: state.products['men'],
+                          category: categories[1]),
+                    )),
+                    Expanded(
+                        child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: ProductColumnDesktop(
+                          items: state.products['accessory'],
+                          category: categories[2]),
+                    )),
+                  ],
+                ),
+                smallScreenComponent: Expanded(
+                  child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: ListView(children: [
+                        ProductColumnMobile(
+                            items: state.products['women'],
+                            category: categories[0]),
+                        ProductColumnMobile(
+                            items: state.products['men'],
+                            category: categories[1]),
+                        ProductColumnMobile(
+                            items: state.products['accessory'],
+                            category: categories[2]),
+                      ])),
+                ),
+              ));
+            } else {
+              return const Text('Error');
+            }
+          }),
         ],
       ),
     );
