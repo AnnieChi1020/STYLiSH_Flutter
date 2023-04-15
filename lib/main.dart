@@ -6,6 +6,31 @@ import 'package:flutter_stylish/pages/main_page/product_column_desktop.dart';
 import 'package:flutter_stylish/components/responsive_widget.dart';
 import 'package:flutter_stylish/pages/main_page/product_column_mobile.dart';
 import 'package:flutter_stylish/services/product_service.dart';
+import 'package:go_router/go_router.dart';
+
+/// The route configuration.
+final GoRouter _router = GoRouter(
+  routes: <RouteBase>[
+    GoRoute(
+      path: '/',
+      builder: (BuildContext context, GoRouterState state) {
+        return const MyHomePage(
+          title: 'STYLiSH',
+        );
+      },
+      routes: <RouteBase>[
+        GoRoute(
+          path: 'details/:productId',
+          builder: (BuildContext context, GoRouterState state) {
+            return DetailPage(
+              productId: state.params['productId']!,
+            );
+          },
+        ),
+      ],
+    ),
+  ],
+);
 
 void main() {
   runApp(const MyApp());
@@ -20,15 +45,12 @@ class MyApp extends StatelessWidget {
     return BlocProvider(
         create: (context) =>
             ProductCubit(productService: ProductService())..fetchProducts(),
-        child: MaterialApp(
+        child: MaterialApp.router(
           title: 'STYLiSH',
           theme: ThemeData(
             primarySwatch: Colors.blueGrey,
           ),
-          home: const MyHomePage(title: 'STYLiSH'),
-          // routes: {
-          //   '/details': (context) => DetailPage(),
-          // },
+          routerConfig: _router,
         ));
   }
 }

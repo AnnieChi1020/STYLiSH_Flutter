@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_stylish/components/responsive_widget.dart';
 import 'package:flutter_stylish/models/product.dart';
 import 'package:flutter_stylish/pages/detail_page/main.dart';
+import 'package:go_router/go_router.dart';
 
 class ProductCard extends StatelessWidget {
   const ProductCard({
@@ -15,10 +17,7 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => DetailPage(product: product)),
-        );
+        GoRouter.of(context).go('/details/${product.id}');
       },
       child: Container(
           margin: const EdgeInsets.only(bottom: 16.0),

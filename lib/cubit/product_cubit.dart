@@ -29,6 +29,7 @@ class ProductCubit extends Cubit<ProductState> {
           .retainWhere((element) => element.category == 'accessories');
 
       emit(ProductLoaded({
+        'all': products,
         'women': womenProducts,
         'men': menProducts,
         'accessory': accessoryProducts
