@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class ProductCard extends StatelessWidget {
@@ -38,8 +39,13 @@ class ProductCard extends StatelessWidget {
                 SizedBox(
                   width: 80.0,
                   height: double.infinity,
-                  child: Image.network(
-                    'https://cors-anywhere.herokuapp.com/' + imageUrl,
+                  child: CachedNetworkImage(
+                    imageUrl: 'https://cors-anywhere.herokuapp.com/' + imageUrl,
+                    placeholder: (context, url) => const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
                     fit: BoxFit.cover,
                   ),
                 ),
