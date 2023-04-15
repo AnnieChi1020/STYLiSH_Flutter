@@ -36,7 +36,7 @@ class ProductService {
       }
     }
 
-    await getProducts(1);
+    await getProducts(0);
 
     return products;
   }

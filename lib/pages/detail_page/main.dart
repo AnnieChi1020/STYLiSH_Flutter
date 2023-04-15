@@ -47,8 +47,16 @@ class DetailPage extends StatelessWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Image.network(
-                                        'assets/images/image1.jpeg',
+                                      CachedNetworkImage(
+                                        imageUrl:
+                                            'https://cors-anywhere.herokuapp.com/${product.mainImage}',
+                                        placeholder: (context, url) =>
+                                            const Center(
+                                          child: CircularProgressIndicator(),
+                                        ),
+                                        errorWidget: (context, url, error) =>
+                                            const Icon(Icons.error),
+                                        fit: BoxFit.cover,
                                       ),
                                       const SizedBox(height: 16.0),
                                       RightDetail(product: product),
