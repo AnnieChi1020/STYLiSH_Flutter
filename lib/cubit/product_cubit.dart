@@ -13,7 +13,7 @@ class ProductCubit extends Cubit<ProductState> {
   Future<void> fetchProducts() async {
     try {
       emit(ProductLoading());
-      final List products = await productService.getProducts('all');
+      final List products = await productService.getAllProducts('all');
 
       final List womenProducts = [];
       womenProducts.addAll(products);
