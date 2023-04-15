@@ -39,7 +39,7 @@ class ProductCard extends StatelessWidget {
                   width: 80.0,
                   height: double.infinity,
                   child: Image.network(
-                    imageUrl,
+                    'https://cors-anywhere.herokuapp.com/' + imageUrl,
                     fit: BoxFit.cover,
                   ),
                 ),

@@ -50,13 +50,6 @@ class Product {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Product> items = [
-    Product(name: 'UNIQLO 特級輕羽絨', price: '100'),
-    Product(name: 'UNIQLO 特級輕羽絨', price: '100'),
-    Product(name: 'UNIQLO 特級輕羽絨', price: '100'),
-    Product(name: 'UNIQLO 特級輕羽絨', price: '100')
-  ];
-
   final List<String> categories = ['女裝', '男裝', '配件'];
 
   final List<String> bannerImages = [
@@ -83,38 +76,39 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         backgroundColor: Colors.grey[100],
       ),
-      body: BlocBuilder<ProductCubit, ProductState>(builder: (context, state) {
-        if (state is ProductLoading) {
-          return const CircularProgressIndicator();
-        }
-        if (state is ProductLoaded) {
-          print(state.products);
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12.0),
-                child: SizedBox(
-                    height: 150.0,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: bannerImages.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(12.0),
-                              child: Image.asset(
-                                bannerImages[index],
-                                width: 360,
-                                fit: BoxFit.cover,
-                              ),
-                            ));
-                      },
-                    )),
-              ),
-              Expanded(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12.0),
+            child: SizedBox(
+                height: 150.0,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: bannerImages.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12.0),
+                          child: Image.asset(
+                            bannerImages[index],
+                            width: 360,
+                            fit: BoxFit.cover,
+                          ),
+                        ));
+                  },
+                )),
+          ),
+          BlocBuilder<ProductCubit, ProductState>(builder: (context, state) {
+            if (state is ProductLoading) {
+              return const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 40.0),
+                  child: Center(
+                      child: SizedBox(child: CircularProgressIndicator())));
+            }
+            if (state is ProductLoaded) {
+              return Expanded(
                   child: ResponsiveWidget(
                 largeScreenComponent: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -123,19 +117,22 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: ProductColumnDesktop(
-                          items: state.products, category: categories[0]),
+                          items: state.products['women'],
+                          category: categories[0]),
                     )),
                     Expanded(
                         child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: ProductColumnDesktop(
-                          items: state.products, category: categories[1]),
+                          items: state.products['men'],
+                          category: categories[1]),
                     )),
                     Expanded(
                         child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: ProductColumnDesktop(
-                          items: state.products, category: categories[2]),
+                          items: state.products['accessory'],
+                          category: categories[2]),
                     )),
                   ],
                 ),
@@ -144,20 +141,23 @@ class _MyHomePageState extends State<MyHomePage> {
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: ListView(children: [
                         ProductColumnMobile(
-                            items: state.products, category: categories[0]),
+                            items: state.products['women'],
+                            category: categories[0]),
                         ProductColumnMobile(
-                            items: state.products, category: categories[1]),
+                            items: state.products['men'],
+                            category: categories[1]),
                         ProductColumnMobile(
-                            items: state.products, category: categories[2]),
+                            items: state.products['accessory'],
+                            category: categories[2]),
                       ])),
                 ),
-              )),
-            ],
-          );
-        } else {
-          return const Text('Error');
-        }
-      }),
+              ));
+            } else {
+              return const Text('Error');
+            }
+          }),
+        ],
+      ),
     );
   }
 }

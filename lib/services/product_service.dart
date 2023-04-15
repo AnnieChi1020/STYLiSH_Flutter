@@ -3,17 +3,38 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class ProductService {
-  Future<List<Product>> getProducts() async {
-    final response = await http
-        .get(Uri.parse('https:/api.appworks-school.tw/api/1.0/products/all'));
+  Future<List<Product>> getProducts(String category) async {
+    List<Product> products = [];
 
-    if (response.statusCode == 200) {
-      final List<dynamic> productsJson = json.decode(response.body)['data'];
-      print(productsJson.map((json) => Product.fromJson(json)));
-      return productsJson.map((json) => Product.fromJson(json)).toList();
-    } else {
-      throw Exception('Failed to load products');
+    _getProducts(int paging) async {
+      String url = 'https:/api.appworks-school.tw/api/1.0/products/$category';
+
+      if (paging != null) {
+        url = url + '?paging=$paging';
+      }
+      print(url);
+
+      final response = await http.get(Uri.parse(url), headers: {
+        'Access-Control-Allow-Origin': '*',
+      });
+
+      if (response.statusCode == 200) {
+        final List<dynamic> productsJson = json.decode(response.body)['data'];
+        List<Product> _products =
+            productsJson.map((json) => Product.fromJson(json)).toList();
+        products = [products, _products].expand((x) => x).toList();
+
+        if (json.decode(response.body)['next_paging'] != null) {
+          await _getProducts(json.decode(response.body)['next_paging']);
+        }
+      } else {
+        throw Exception('Failed to load products');
+      }
     }
+
+    await _getProducts(1);
+
+    return products;
   }
 }
 

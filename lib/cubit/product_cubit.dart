@@ -13,8 +13,26 @@ class ProductCubit extends Cubit<ProductState> {
   Future<void> fetchProducts() async {
     try {
       emit(ProductLoading());
-      final List products = await productService.getProducts();
-      emit(ProductLoaded(products));
+      final List products = await productService.getProducts('all');
+
+      final List womenProducts = [];
+      womenProducts.addAll(products);
+      womenProducts.retainWhere((element) => element.category == 'women');
+
+      final List menProducts = [];
+      menProducts.addAll(products);
+      menProducts.retainWhere((element) => element.category == 'men');
+
+      final List accessoryProducts = [];
+      accessoryProducts.addAll(products);
+      accessoryProducts
+          .retainWhere((element) => element.category == 'accessories');
+
+      emit(ProductLoaded({
+        'women': womenProducts,
+        'men': menProducts,
+        'accessory': accessoryProducts
+      }));
     } catch (e) {
       emit(ProductError(e.toString()));
     }
