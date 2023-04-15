@@ -47,16 +47,30 @@ class DetailPage extends StatelessWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      CachedNetworkImage(
-                                        imageUrl:
-                                            'https://cors-anywhere.herokuapp.com/${product.mainImage}',
-                                        placeholder: (context, url) =>
-                                            const Center(
-                                          child: CircularProgressIndicator(),
+                                      ResponsiveWidget(
+                                        smallScreenComponent:
+                                            CachedNetworkImage(
+                                          imageUrl: product.mainImage,
+                                          placeholder: (context, url) =>
+                                              const Center(
+                                            child: CircularProgressIndicator(),
+                                          ),
+                                          errorWidget: (context, url, error) =>
+                                              const Icon(Icons.error),
+                                          fit: BoxFit.cover,
                                         ),
-                                        errorWidget: (context, url, error) =>
-                                            const Icon(Icons.error),
-                                        fit: BoxFit.cover,
+                                        largeScreenComponent:
+                                            CachedNetworkImage(
+                                          imageUrl:
+                                              'https://cors-anywhere.herokuapp.com/${product.mainImage}',
+                                          placeholder: (context, url) =>
+                                              const Center(
+                                            child: CircularProgressIndicator(),
+                                          ),
+                                          errorWidget: (context, url, error) =>
+                                              const Icon(Icons.error),
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
                                       const SizedBox(height: 16.0),
                                       RightDetail(product: product),
@@ -119,6 +133,7 @@ class DetailPage extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 20.0),
                                 ListView.builder(
+                                  physics: PageScrollPhysics(),
                                   shrinkWrap: true,
                                   scrollDirection: Axis.vertical,
                                   itemCount: product.images.length,
@@ -127,17 +142,34 @@ class DetailPage extends StatelessWidget {
                                     return Padding(
                                         padding: const EdgeInsets.symmetric(
                                             vertical: 8.0),
-                                        child: CachedNetworkImage(
-                                          imageUrl:
-                                              'https://cors-anywhere.herokuapp.com/${product.images[index]}',
-                                          placeholder: (context, url) =>
-                                              const Center(
-                                            child: CircularProgressIndicator(),
-                                          ),
-                                          errorWidget: (context, url, error) =>
-                                              const Icon(Icons.error),
-                                          fit: BoxFit.cover,
-                                        ));
+                                        child: ResponsiveWidget(
+                                            largeScreenComponent:
+                                                CachedNetworkImage(
+                                              imageUrl:
+                                                  'https://cors-anywhere.herokuapp.com/${product.images[index]}',
+                                              placeholder: (context, url) =>
+                                                  const Center(
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              ),
+                                              errorWidget:
+                                                  (context, url, error) =>
+                                                      const Icon(Icons.error),
+                                              fit: BoxFit.cover,
+                                            ),
+                                            smallScreenComponent:
+                                                CachedNetworkImage(
+                                              imageUrl: product.images[index],
+                                              placeholder: (context, url) =>
+                                                  const Center(
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              ),
+                                              errorWidget:
+                                                  (context, url, error) =>
+                                                      const Icon(Icons.error),
+                                              fit: BoxFit.cover,
+                                            )));
                                   },
                                 ),
                               ],

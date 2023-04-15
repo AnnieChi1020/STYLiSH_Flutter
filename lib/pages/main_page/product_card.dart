@@ -41,8 +41,7 @@ class ProductCard extends StatelessWidget {
                   width: 80.0,
                   height: double.infinity,
                   child: CachedNetworkImage(
-                    imageUrl:
-                        'https://cors-anywhere.herokuapp.com/${product.mainImage}',
+                    imageUrl: product.mainImage,
                     placeholder: (context, url) => const Center(
                       child: CircularProgressIndicator(),
                     ),

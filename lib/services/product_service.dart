@@ -8,7 +8,7 @@ class ProductService {
     List<Product> products = [];
 
     getProducts(int paging) async {
-      String url = 'https:/api.appworks-school.tw/api/1.0/products/$category';
+      String url = 'https://api.appworks-school.tw/api/1.0/products/$category';
 
       if (paging != null) {
         url = url + '?paging=$paging';
@@ -16,9 +16,6 @@ class ProductService {
 
       final response = await dio.get(
         url,
-        queryParameters: {
-          'paging': paging,
-        },
       );
 
       if (response.statusCode == 200) {
