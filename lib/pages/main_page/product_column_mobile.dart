@@ -38,11 +38,7 @@ class _ProductColumnMobileState extends State<ProductColumnMobile> {
         visible: isShow,
         child: Column(
           children: widget.items
-              .map((product) => ProductCard(
-                    name: product.title,
-                    price: product.price,
-                    imageUrl: product.mainImage,
-                  ))
+              .map((product) => ProductCard(product: product))
               .toList(),
         ),
       )

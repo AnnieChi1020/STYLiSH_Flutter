@@ -29,11 +29,7 @@ class ProductColumnDesktop extends StatelessWidget {
             key: centerKey,
             delegate: SliverChildBuilderDelegate(
               (BuildContext context, int index) {
-                return ProductCard(
-                  name: items[index].title,
-                  price: items[index].price,
-                  imageUrl: items[index].mainImage,
-                );
+                return ProductCard(product: items[index]);
               },
               childCount: items.length,
             ),

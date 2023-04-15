@@ -26,9 +26,9 @@ class MyApp extends StatelessWidget {
             primarySwatch: Colors.blueGrey,
           ),
           home: const MyHomePage(title: 'STYLiSH'),
-          routes: {
-            '/details': (context) => DetailPage(),
-          },
+          // routes: {
+          //   '/details': (context) => DetailPage(),
+          // },
         ));
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_stylish/models/product.dart';
 import 'package:flutter_stylish/pages/detail_page/selector_panel.dart/color_button.dart';
 
 class ColorSelector extends StatefulWidget {
@@ -9,7 +10,7 @@ class ColorSelector extends StatefulWidget {
       required this.setSelectColor})
       : super(key: key);
 
-  final List<Map<String, String>> colors;
+  final List<Color> colors;
   final String selectedColor;
   final Function setSelectColor;
 
@@ -33,7 +34,7 @@ class _ColorSelectorState extends State<ColorSelector> {
               scrollDirection: Axis.horizontal,
               itemCount: widget.colors.length,
               itemBuilder: (BuildContext context, int index) {
-                String code = widget.colors[index]['code']!;
+                String code = widget.colors[index].code;
                 return ColorButton(
                     code: code,
                     selected: code == widget.selectedColor,

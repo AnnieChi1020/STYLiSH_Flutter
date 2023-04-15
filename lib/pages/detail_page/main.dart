@@ -1,13 +1,26 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stylish/components/responsive_widget.dart';
+import 'package:flutter_stylish/models/product.dart';
 import 'package:flutter_stylish/pages/detail_page/right_detail.dart';
 
 class DetailPage extends StatelessWidget {
+  const DetailPage({
+    super.key,
+    required this.product,
+  });
+
+  final Product product;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Detail Page'),
+        title: Image.asset(
+          'assets/images/stylish_logo.png',
+          width: 150.0,
+        ),
+        backgroundColor: Colors.grey[100],
       ),
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
@@ -34,11 +47,11 @@ class DetailPage extends StatelessWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Image.asset(
+                                      Image.network(
                                         'assets/images/image1.jpeg',
                                       ),
                                       const SizedBox(height: 16.0),
-                                      RightDetail(),
+                                      RightDetail(product: product),
                                     ],
                                   ),
                                   largeScreenComponent: Row(
@@ -49,13 +62,23 @@ class DetailPage extends StatelessWidget {
                                       SizedBox(
                                         height: 600,
                                         width: 400,
-                                        child: Image.asset(
-                                          'assets/images/image1.jpeg',
+                                        child: CachedNetworkImage(
+                                          imageUrl:
+                                              'https://cors-anywhere.herokuapp.com/${product.mainImage}',
+                                          placeholder: (context, url) =>
+                                              const Center(
+                                            child: CircularProgressIndicator(),
+                                          ),
+                                          errorWidget: (context, url, error) =>
+                                              const Icon(Icons.error),
                                           fit: BoxFit.cover,
                                         ),
                                       ),
                                       const SizedBox(width: 20.0),
-                                      Expanded(child: RightDetail()),
+                                      Expanded(
+                                          child: RightDetail(
+                                        product: product,
+                                      )),
                                     ],
                                   ),
                                 ),
@@ -87,13 +110,28 @@ class DetailPage extends StatelessWidget {
                                   ),
                                 ),
                                 const SizedBox(height: 20.0),
-                                Image.asset('assets/images/image1.jpeg'),
-                                const SizedBox(height: 12.0),
-                                Image.asset('assets/images/image1.jpeg'),
-                                const SizedBox(height: 12.0),
-                                Image.asset('assets/images/image1.jpeg'),
-                                const SizedBox(height: 12.0),
-                                Image.asset('assets/images/image1.jpeg'),
+                                ListView.builder(
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.vertical,
+                                  itemCount: product.images.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 8.0),
+                                        child: CachedNetworkImage(
+                                          imageUrl:
+                                              'https://cors-anywhere.herokuapp.com/${product.images[index]}',
+                                          placeholder: (context, url) =>
+                                              const Center(
+                                            child: CircularProgressIndicator(),
+                                          ),
+                                          errorWidget: (context, url, error) =>
+                                              const Icon(Icons.error),
+                                          fit: BoxFit.cover,
+                                        ));
+                                  },
+                                ),
                               ],
                             )));
                   }),

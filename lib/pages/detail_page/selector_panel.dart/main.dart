@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_stylish/models/product.dart';
 import './color_selector.dart';
 import './quantity_selector.dart';
 import './size_selector.dart';
@@ -7,7 +8,7 @@ class SelectorPanel extends StatefulWidget {
   const SelectorPanel({Key? key, required this.colors, required this.sizes})
       : super(key: key);
 
-  final List<Map<String, String>> colors;
+  final List<Color> colors;
   final List<String> sizes;
 
   @override
