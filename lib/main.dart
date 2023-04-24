@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stylish/cubit/product_cubit.dart';
 import 'package:flutter_stylish/pages/detail_page/main.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_stylish/components/responsive_widget.dart';
 import 'package:flutter_stylish/pages/main_page/product_column_mobile.dart';
 import 'package:flutter_stylish/services/product_service.dart';
 import 'package:go_router/go_router.dart';
+import 'dart:async';
 
 /// The route configuration.
 final GoRouter _router = GoRouter(
@@ -88,6 +90,27 @@ class _MyHomePageState extends State<MyHomePage> {
     context.read<ProductCubit>().fetchProducts();
   }
 
+  static const platform = MethodChannel('samples.flutter.dev/battery');
+
+  // Get battery level.
+  String _batteryLevel = 'Unknown battery level.';
+
+  Future<void> _getBatteryLevel() async {
+    print('click');
+    String batteryLevel;
+    try {
+      final int result = await platform.invokeMethod('getBatteryLevel');
+      print(result);
+      batteryLevel = 'Battery level at $result % .';
+    } on PlatformException catch (e) {
+      batteryLevel = "Failed to get battery level: '${e.message}'.";
+    }
+
+    setState(() {
+      _batteryLevel = batteryLevel;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -101,6 +124,21 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          SizedBox(
+            height: 200,
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: _getBatteryLevel,
+                    child: const Text('Get Battery Level'),
+                  ),
+                  Text(_batteryLevel),
+                ],
+              ),
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 12.0),
             child: SizedBox(
